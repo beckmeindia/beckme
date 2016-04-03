@@ -5,7 +5,8 @@ HTML5 display definitions
 ========================================================================== */
  
 /* * Corrects `block` display not defined in IE 6/7/8/9 and Firefox 3. */
- 
+@font-face{font-family: Maven Pro; src: url(../fonts/MavenPro-Regular.ttf);} 
+@font-face{font-family: Maven ProB; src: url(../fonts/MavenPro-Bold.ttf);} 
 article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary { display: block; }
 /* * Corrects `inline-block` display not defined in IE 6/7/8/9 and Firefox 3. */
 audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
@@ -29,9 +30,9 @@ html { font-size: 100%; /* 1 */
 html, html a { -webkit-font-smoothing: antialiased; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004); }
 /* * Addresses `font-family` inconsistency between `textarea` and other form
 * elements. */
-html, button, input, select, textarea { font-family: 'Varela Round', sans-serif; }
+html, button, input, select, textarea { font-family: 'Maven Pro', sans-serif; }
 /* * Addresses margins handled incorrectly in IE 6/7. */
-body { margin: 0; font-family: 'Varela Round', sans-serif; }
+body { margin: 0; font-family: 'Maven ProB', sans-serif; }
 /* ==========================================================================
 Links
 ========================================================================== */
