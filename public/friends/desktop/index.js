@@ -421,7 +421,6 @@ $(document).ready(function(){
 
 	//open modal
 	$main_nav.on('click', function(event){
-		console.log("click detected");
 		$form_modal.addClass('is-visible'); ( $(event.target).is('.cd-signup') ) ? signup_selected() : login_selected();
 			/*
 		if( $(event.target).is($main_nav) ) {
@@ -657,19 +656,9 @@ $(document).ready(function(){
 		usrnewmail = String(usremail).replace(/[^a-zA-Z0-9]/g, ' ');
 		firebaseRef.child("users").child(usrnewmail).once("value", function(snapshot) {
 			if(snapshot.val()){
-				swal({   title: "Email already in use",   text: "Hey! You are already registered with us",   timer: 1500,   showConfirmButton: false });		
 				$('body').plainOverlay('hide');	
-				usrname = snapshot.child("usrname").val();
-				usremail=  snapshot.child("usremail").val();
-				usrphone = snapshot.child("usrphone").val();
-				usrid = snapshot.child("usrid").val();
-				console.log(usrname+" "+usrphone);
-				document.getElementById("namehdr").innerHTML += 'Hi ' + usrname.split(" ")[0].substring(0, 10);		 
-				document.getElementById("namehdr").style.display = "inline-block";
-				document.getElementById("signleft").style.display = "none";
-				fbflag = 0; loggedin = 1; document.getElementById("mnuitm").style.display="block"; document.getElementById("tgnmlyn").style.paddingLeft = "20px";
-				$('#myanchor').click();
-				//now call login funtion()				
+				swal({   title: "Email already in use",   text: "Hey! You are already registered with us. Please Login",   timer: 2000,   showConfirmButton: false });		
+				$('#signinbtnn').click();		
 			}else{
 				mailconfirm(usremail);
 				$('body').plainOverlay('hide');
@@ -731,8 +720,7 @@ $(document).ready(function(){
 		usrnewmail = String(usremail).replace(/[^a-zA-Z0-9]/g, ' ');
 		firebaseRef.authWithPassword({email:usremail, password : passwd}, function(error, authData) {
   if (error) {
-    sweetAlert("Incorrect credentials", "There was a problem Logging you in. Please try with correct E-mail & password", "error");
-	$('body').plainOverlay('hide');
+    sweetAlert("Incorrect credentials", "Please try with correct E-mail & password. If you are a new user, please Sign Up", "error");
 	return;
   } else {
     firebaseRef.child("users").child(usrnewmail).once("value", function(snapshot) {
