@@ -417,11 +417,13 @@ $(document).ready(function(){
 		$tab_signup = $form_modal_tab.children('li').eq(1).children('a'),
 		$forgot_password_link = $form_login.find('.cd-form-bottom-message a'),
 		$back_to_login_link = $form_forgot_password.find('.cd-form-bottom-message a'),
-		$main_nav = $('#regmodal');
+		$main_nav = $('#signleft');
 
 	//open modal
 	$main_nav.on('click', function(event){
-
+		console.log("click detected");
+		$form_modal.addClass('is-visible'); ( $(event.target).is('.cd-signup') ) ? signup_selected() : login_selected();
+			/*
 		if( $(event.target).is($main_nav) ) {
 			// on mobile open the submenu
 			$(this).children('ul').toggleClass('is-visible');
@@ -433,7 +435,7 @@ $(document).ready(function(){
 			//show the selected form
 			( $(event.target).is('.cd-signup') ) ? signup_selected() : login_selected();
 		}
-
+		*/
 	});
 
 	//close modal
@@ -665,7 +667,7 @@ $(document).ready(function(){
 				document.getElementById("namehdr").innerHTML += 'Hi ' + usrname.split(" ")[0].substring(0, 10);		 
 				document.getElementById("namehdr").style.display = "inline-block";
 				document.getElementById("signleft").style.display = "none";
-				fbflag = 0; loggedin = 1;	
+				fbflag = 0; loggedin = 1; document.getElementById("mnuitm").style.display="block"; document.getElementById("tgnmlyn").style.paddingLeft = "20px";
 				$('#myanchor').click();
 				//now call login funtion()				
 			}else{
@@ -698,6 +700,8 @@ $(document).ready(function(){
 				if(usremail=="" || usremail===undefined){ swal({   title: "Your Email!",   text: "Oops! There was a problem confirming your email",   type: "input",   showCancelButton: true,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your email here" }, function(inputValuez){   if (inputValuez === false) return false;      if (inputValuez === "") {     swal.showInputError("You need to write something!");     return false   }     usrnewmail = String(inputValuez).replace(/[^a-zA-Z0-9]/g, ' '); usremail = inputValuez})};
 				$('body').plainOverlay('show',{opacity:0.8, fillColor: '#000', progress: function() { return $('<div style="font-size:40px;color:#fff;font-weight:bold">Creating your Account...</div>') }});
 				firebaseRef.createUser({ email    : usremail,  password : passwd}, function(error, userData) {
+					localStorage.setItem('svemail' , usremail);
+					localStorage.setItem('svpsw' , passwd);
 					if (error) {
 						sweetAlert("Oops...", "There was a problem creating your Account. Please try Again", "error");
 						$('body').plainOverlay('hide');
@@ -705,11 +709,11 @@ $(document).ready(function(){
 					} else {
 						firebaseRef.child("users").child(usrnewmail).update({usrname:usrname, usremail:usremail, usrid:usrnewmail, usrphone:intno});	
 						usrphone = intno; usrid = usrnewmail; var regsclbck = "New user registered on friends : "+usrname+" "+usrphone+" "+usremail;
-						mailcall(regsclbck); $('body').plainOverlay('hide'); swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); loggedin = 1;		
+						mailcall(regsclbck); $('body').plainOverlay('hide'); swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); loggedin = 1;	document.getElementById("mnuitm").style.display="block"; document.getElementById("tgnmlyn").style.paddingLeft = "20px";
 				document.getElementById("namehdr").innerHTML += 'Hi ' + usrname.split(" ")[0].substring(0, 10);		 
 				document.getElementById("namehdr").style.display = "inline-block";
 				document.getElementById("signleft").style.display = "none";
-				fbflag = 0; loggedin = 1;	
+				fbflag = 0; loggedin = 1; document.getElementById("mnuitm").style.display="block"; document.getElementById("tgnmlyn").style.paddingLeft = "20px";
 				$('#myanchor').click();						
 					};
 				})			
@@ -727,7 +731,7 @@ $(document).ready(function(){
 		usrnewmail = String(usremail).replace(/[^a-zA-Z0-9]/g, ' ');
 		firebaseRef.authWithPassword({email:usremail, password : passwd}, function(error, authData) {
   if (error) {
-    sweetAlert("Oops...", "There was a problem Logging you in. Please try with correct E-mail & password", "error");
+    sweetAlert("Incorrect credentials", "There was a problem Logging you in. Please try with correct E-mail & password", "error");
 	$('body').plainOverlay('hide');
 	return;
   } else {
@@ -737,10 +741,12 @@ $(document).ready(function(){
 				usremail=  snapshot.child("usremail").val();
 				usrphone = snapshot.child("usrphone").val();
 				usrid = snapshot.child("usrid").val();
+				localStorage.setItem('svemail' , usremail);
+				localStorage.setItem('svpsw' , passwd);
 				document.getElementById("namehdr").innerHTML += 'Hi ' + usrname.split(" ")[0].substring(0, 10);		 
 				document.getElementById("namehdr").style.display = "inline-block";
 				document.getElementById("signleft").style.display = "none";
-				fbflag = 0; loggedin = 1;	
+				fbflag = 0; loggedin = 1; document.getElementById("mnuitm").style.display="block"; document.getElementById("tgnmlyn").style.paddingLeft = "20px";
 				$('#myanchor').click();			
 			}else{
 				sweetAlert("Oops...", "Our servers could not recognise you. Please try Again", "error");
@@ -783,7 +789,7 @@ $(document).ready(function(){
 				});				
 				usrphone = intno;
 				swal("Update Succesful", "Congratulations. You have succesully updated your mobile number", "success"); 
-				loggedin = 1;				
+				loggedin = 1; document.getElementById("mnuitm").style.display="block"; document.getElementById("tgnmlyn").style.paddingLeft = "20px";	
 				});
 				});	
 				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px; font-family:\'Maven Pro\', sans-serif;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
@@ -1372,9 +1378,8 @@ $(document).ready(function(){
 			document.getElementById("pckgctr").innerHTML="Loading...";
 			var address = ''; rsltshow = 0; google.maps.event.trigger(map, 'resize');
 			$("#tflbckg").css("background-image", "");
-			$('.close-initModal').trigger('click');	
-			document.getElementById("mnuitm").style.display="block";
-			document.getElementById("tgnmlyn").style.paddingLeft = "20px";
+			$('.close-initModal').trigger('click');
+			document.getElementById("lastbit").style.display="block";
 			if (place.address_components) {
             address = [
               (place.address_components[0] && place.address_components[0].short_name || ''),
@@ -1401,8 +1406,9 @@ $(document).ready(function(){
 				usremail=  snapshot.child("usremail").val();
 				usrphone = snapshot.child("usrphone").val();
 				usrid = snapshot.child("usrid").val();
-				fbflag = 0; loggedin = 1;	
-				$('body').plainOverlay('hide');			
+				fbflag = 0; loggedin = 1; document.getElementById("mnuitm").style.display="block"; document.getElementById("tgnmlyn").style.paddingLeft = "20px";
+				$('#myanchor').click(); $('body').plainOverlay('hide');	
+				
 			}else if(clicklogin==1){
 				$('body').plainOverlay('hide');					
 				swal({title: "Mobile Verification", text: "",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
@@ -1431,9 +1437,9 @@ $(document).ready(function(){
 				usrphone = intno;
 				usrid = usrnewmail;
 				var regsclbck = "New user registered on friends : "+usrname+" "+usrphone+" "+usremail;
-				mailcall(regsclbck);			
+				mailcall(regsclbck); $('#myanchor').click();		
 				swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); 
-				loggedin = 1;
+				loggedin = 1; document.getElementById("mnuitm").style.display="block"; document.getElementById("tgnmlyn").style.paddingLeft = "20px";
 				});
 				});	
 				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');

@@ -702,7 +702,7 @@ input:focus {
 						<label for="accept-terms">OR</label>
 					</p>
 					<p class="fieldset">
-						<input class="full-width has-padding" type="button" style="background:#3b5998;color:#fff" value="Login with Facebook" onclick="login()">
+						<input class="full-width has-padding" type="button" style="background:#3b5998;color:#fff" value="Login with Facebook" onclick="befrlogin()">
 					</p>
 				</form>				
 				<p class="cd-form-bottom-msg"><a href="#0"style="text-decoration:none">Skip & Get started</a></p>
@@ -729,7 +729,7 @@ input:focus {
 						<label for="accept-terms">OR</label>
 					</p>
 					<p class="fieldset">
-						<input class="full-width has-padding" type="button" style="background:#3b5998;color:#fff" value="Connect with Facebook" onclick="login()">
+						<input class="full-width has-padding" type="button" style="background:#3b5998;color:#fff" value="Connect with Facebook" onclick="befrlogin()">
 					</p>					
 					<p class="fieldset"  style="text-align:center">
 						<label for="accept-terms">By signing up, you agree to the <a href="#0" style="text-decoration:none">Terms</a></label>
@@ -810,6 +810,12 @@ input:focus {
 	else {
 	hiname = 1; acceptsloaded=1;
 	loggedin=0,usrname="",usremail="",usrphone="",usrid="";
+	if(localStorage.getItem('svemail')){
+		document.getElementById("signin-email").value = localStorage.getItem('svemail');
+		document.getElementById("signin-password").value = localStorage.getItem('svpsw');
+		loginmail();
+	}
+	// call the login function with credentials from localstorage
 	}
 	});	
 	};
@@ -863,15 +869,15 @@ input:focus {
 								</li>
 								<li><a id="demo01" href="#animatedModal" class="gn-icon gn-icon-archive">Posted Requests</a></li>
 								<li><a id="demo02" href="#acceptedModal" class="gn-icon gn-icon-help">Accepted Requests</a></li>
-								<li><a id="demo04" href="#profileModal" class="gn-icon gn-icon-help">My Profile</a></li>
-								<li id="regmodal"><a href="#0" class="gn-icon gn-icon-cog cd-signin">Registration</a></li>								
+								<li style="display:none"><a id="demo04" href="#profileModal" class="gn-icon gn-icon-help">My Profile</a></li>
+								<li style="display:none"><a href="#0" class="gn-icon gn-icon-cog cd-signin">Registration</a></li>								
 							</ul>
 						</div>
 					</nav>
 				</li>
 				<li id="tgnmlyn" style="padding-left:60px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:#ff0000;">Friends</span></li>
 				<li id="mnuitm2" style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;"/><input placeholder="Search Location" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
-				<li style="padding-left:40px;padding-right:40px;font-size:18px;float:right;" ><span id="namehdr" style="vertical-align: middle;margin-top:-5px;display:none"><img id="profile_img" src="profile.png" style="margin-top:-5px;margin-right:15px;border-radius:50%;width:40px;height:40px;vertical-align: middle;"/></span> <md-button onclick="befrlogin()" id="signleft" class="md-raised md-primary" style="margin-top:-5px"><!--md-icon md-svg-icon="fb.svg" style="padding:0"></md-icon--> Login</md-button></li>				
+				<li id="lastbit" style="display:none;padding-left:40px;padding-right:40px;font-size:18px;float:right;" ><span id="namehdr" style="vertical-align: middle;margin-top:-5px;display:none"><img id="profile_img" src="profile.png" style="margin-top:-5px;margin-right:15px;border-radius:50%;width:40px;height:40px;vertical-align: middle;"/></span> <md-button id="signleft" md-no-ink class="md-primary" style="margin-top:-5px">LOGIN</md-button></li>				
 			</ul>			
 		</div>		
 		<div layout="row" style="padding-top:60px;height:100%;background:#cccccc" ng-controller="AppCtrl" ng-cloak="" class="carddemoInCardActions">
