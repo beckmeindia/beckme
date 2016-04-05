@@ -3,7 +3,7 @@
 	var vehiclesInQuery = {}; var img64; var autoflag=0; var deliveryFare, pickuplat,pickuplng, delvlat, delvlng, description=" ", pickuparea, pickupaddr, pickupname, pickupnum, deliveryaddr, deliveryarea, deliverynum, deliveryname,deliverydate,deliverytime, pckgvalue = "Less than Rs. 5000", pckgweight = "1 Kg - 10 Kgs",pckgsize = "SMALL (FITS IN BAG)";
 	var pfare, psize, pweight, ppickup, ppickupaddr, pdelv,pdelvaddr,pdatetym,pckgimg,imagz, pusrid, pusrphn, porderid;
 	var loggedin=0,usrname="",usremail="",usrphone="",usrid="", usrfbimg="", usrfbid="", fbflag=0, usrnewmail="";
-	var otp; var locerr = 0; var hiname = 0; var acceptsloaded = 0; var fare =""; var conval = 1; var convcurr="INR";
+	var otp; var otpmail; var locerr = 0; var hiname = 0; var acceptsloaded = 0; var fare =""; var conval = 1; var convcurr="INR";
 	var arrPckgs = []; var rsltshow = 0; var idpckgmatch; var arraccepts = []; var revrsdone = 0;
 	app.controller('AppController', ["$scope", "$firebaseArray",
 		
@@ -152,7 +152,8 @@
 					arraccepts.push(arr[key].$id);
 					}
 				}
-				acceptsloaded = 1;			
+				acceptsloaded = 1;		
+/*				
 				if(arr.$getRecord("notification").$value == "no"){
 					document.getElementById("notif1").style.display="none";
 				}
@@ -160,6 +161,7 @@
 					document.getElementById("notif1").style.display="inline";
 					document.getElementById("notif").style.display="inline";
 				}
+				*/
 			});
 			$scope.posts = $firebaseArray(firebaseRef.child("users").child(usrid).child("posts"));
 			$scope.posts.$loaded()
@@ -173,7 +175,8 @@
 					}
 				}				
 				}
-				},1500);				
+				},1500);
+/*				
 				if(arr.$getRecord("notification").$value == "no"){
 					document.getElementById("notif2").style.display="none";					
 				}
@@ -181,11 +184,133 @@
 					document.getElementById("notif2").style.display="inline";
 					document.getElementById("notif").style.display="inline";
 				}
+				*/
 			});
 		  }
 		},2000);	
 		}
 	]);
+	
+	jQuery(document).ready(function($){
+	var $form_modal = $('.cd-user-modal'),
+		$form_login = $form_modal.find('#cd-login'),
+		$form_signup = $form_modal.find('#cd-signup'),
+		$form_forgot_password = $form_modal.find('#cd-reset-password'),
+		$form_modal_tab = $('.cd-switcher'),
+		$tab_login = $form_modal_tab.children('li').eq(0).children('a'),
+		$tab_signup = $form_modal_tab.children('li').eq(1).children('a'),
+		$forgot_password_link = $form_login.find('.cd-form-bottom-message a'),
+		$back_to_login_link = $form_forgot_password.find('.cd-form-bottom-message a'),
+		$main_nav = $('#signleft'); // this is the id of the login button
+
+	//open modal
+	$main_nav.on('click', function(event){
+		$form_modal.addClass('is-visible'); ( $(event.target).is('.cd-signup') ) ? signup_selected() : login_selected();
+			/*
+		if( $(event.target).is($main_nav) ) {
+			// on mobile open the submenu
+			$(this).children('ul').toggleClass('is-visible');
+		} else {
+			// on mobile close submenu
+			$main_nav.children('ul').removeClass('is-visible');
+			//show modal layer
+			$form_modal.addClass('is-visible');	
+			//show the selected form
+			( $(event.target).is('.cd-signup') ) ? signup_selected() : login_selected();
+		}
+		*/
+	});
+
+	//close modal
+	$('.cd-user-modal').on('click', function(event){
+		if( $(event.target).is($form_modal) || $(event.target).is('.cd-close-form') ) {
+			$form_modal.removeClass('is-visible');
+		}	
+	});
+	//close modal when clicking the esc keyboard button
+	$(document).keyup(function(event){
+    	if(event.which=='27'){
+    		$form_modal.removeClass('is-visible');
+	    }
+    });
+
+	//switch from a tab to another
+	$form_modal_tab.on('click', function(event) {
+		event.preventDefault();
+		( $(event.target).is( $tab_login ) ) ? login_selected() : signup_selected();
+	});
+
+	//hide or show password
+	$('.hide-password').on('click', function(){
+		var $this= $(this),
+			$password_field = $this.prev('input');
+		
+		( 'password' == $password_field.attr('type') ) ? $password_field.attr('type', 'text') : $password_field.attr('type', 'password');
+		( 'Hide' == $this.text() ) ? $this.text('Show') : $this.text('Hide');
+		//focus and move cursor to the end of input field
+		$password_field.putCursorAtEnd();
+	});
+
+	//show forgot-password form 
+	$forgot_password_link.on('click', function(event){
+		event.preventDefault();
+		forgot_password_selected();
+	});
+
+	//back to login from the forgot-password form
+	$back_to_login_link.on('click', function(event){
+		event.preventDefault();
+		login_selected();
+	});
+
+	function login_selected(){
+		$form_login.addClass('is-selected');
+		$form_signup.removeClass('is-selected');
+		$form_forgot_password.removeClass('is-selected');
+		$tab_login.addClass('selected');
+		$tab_signup.removeClass('selected');
+	}
+
+	function signup_selected(){
+		$form_login.removeClass('is-selected');
+		$form_signup.addClass('is-selected');
+		$form_forgot_password.removeClass('is-selected');
+		$tab_login.removeClass('selected');
+		$tab_signup.addClass('selected');
+	}
+
+	function forgot_password_selected(){
+		$form_login.removeClass('is-selected');
+		$form_signup.removeClass('is-selected');
+		$form_forgot_password.addClass('is-selected');
+	}
+
+	//REMOVE THIS - it's just to show error messages 
+	$form_login.find('input[type="submit"]').on('click', function(event){
+		event.preventDefault();
+		$form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+	});
+	$form_signup.find('input[type="submit"]').on('click', function(event){
+		event.preventDefault();
+		$form_signup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+	});
+
+});
+
+jQuery.fn.putCursorAtEnd = function() {
+	return this.each(function() {
+    	// If this function exists...
+    	if (this.setSelectionRange) {
+      		var len = $(this).val().length * 2;
+      		this.focus();
+      		this.setSelectionRange(len, len);
+    	} else {
+    		// ... otherwise replace the contents with itself
+    		// (Doesn't work in Google Chrome)
+      		$(this).val($(this).val());
+    	}
+	});
+};
 	
 	function openposts(){
 		myNavigator.pushPage('posted.html', { animation : 'push' } );
@@ -284,6 +409,24 @@
 	}
 	}
 	
+	
+	function mailconfirm(uemail){
+	otpmail = Math.floor((Math.random() * 900) + 1000);
+	$.ajax({
+      url: 'https://www.beckme.in/mailverification.php',
+      data:
+      {
+        code : otpmail,
+		email : uemail
+      },
+      error: function(error) {
+        },
+      success: function(data) {
+       },
+      type: 'POST'
+	});
+	}
+	
 	function mailcall(custName,custEmail,custPhone){
 	$.ajax({
       url: 'https://www.beckme.in/request.php',
@@ -344,7 +487,6 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	
 	function getLocation() {
 	if (navigator.geolocation) {
-		myNavigator.pushPage('accept.html', { animation : 'none' } );
 		navigator.geolocation.getCurrentPosition(showPosition,onerror,{maximumAge:600000});
     }
 	}
@@ -1031,7 +1173,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	var fbflag,clicklogin=0;
 	
 	function editnum(){
-		if(loggedin==1){swal({   title: "Change number",   text: "Your present registered number is +"+usrphone+". Are you sure you want to change it?", html: true,   type: "warning",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Change it",   closeOnConfirm: false }, function(){ smsending() })}else{befrlogin()};
+		if(loggedin==1){swal({   title: "Change number",   text: "Your present registered number is +"+usrphone+". Are you sure you want to change it?", html: true,   type: "warning",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Change it",   closeOnConfirm: false }, function(){ smsending() })}else{sidebar.toggleMenu();$('#signleft').click()};
 	}	
 	
 	function smsending(){
@@ -1062,7 +1204,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				});				
 				usrphone = intno;
 				swal("Update Succesful", "Congratulations. You have succesully updated your mobile number", "success"); 
-				loggedin = 1;				
+				loggedin = 1; $('#myanchor').click();					
 				});
 				});	
 				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px; font-family:\'Maven Pro\', sans-serif;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
@@ -1074,13 +1216,13 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 	
 	function checkfirebase(email){		
 		usrnewmail = String(email).replace(/[^a-zA-Z0-9]/g, ' ');
-		firebaseRef.child("users").once("value", function(snapshot) {			
-			if(snapshot.hasChild(usrnewmail)){
-				usrname = snapshot.child(usrnewmail).child("usrname").val();
-				usremail=  snapshot.child(usrnewmail).child("usremail").val();
-				usrphone = snapshot.child(usrnewmail).child("usrphone").val();
-				usrid = snapshot.child(usrnewmail).child("usrid").val();
-				fbflag = 0; loggedin = 1;		
+		firebaseRef.child("users").child(usrnewmail).once("value", function(snapshot) {			
+			if(snapshot.val()){
+				usrname = snapshot.child("usrname").val();
+				usremail=  snapshot.child("usremail").val();
+				usrphone = snapshot.child("usrphone").val();
+				usrid = snapshot.child("usrid").val();
+				fbflag = 0; loggedin = 1;$('#myanchor').click();			
 			}else if(clicklogin==1){				
 				swal({title: "Mobile Verification", text: "",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
 				function(inputValue){
@@ -1111,7 +1253,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
 				var regsclbck = "New user registered on friends : "+usrname+" "+usrphone+" "+usremail;
 				mailcall(regsclbck);			
 				swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); 				
-				loggedin = 1;
+				loggedin = 1;$('#myanchor').click();	
 				});
 				});	
 				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
@@ -1433,3 +1575,127 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
     })
 	}
 
+	
+	function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+	}
+
+	var passwd;
+	function signupmail(){
+		if(document.getElementById("signup-email").value==""||document.getElementById("signup-username").value==""||document.getElementById("signup-password").value==""){
+			swal({   title: "Insufficient Details",   text: "Oops! Please fill all details for Signing Up",   type: "error",   confirmButtonText: "OK" });
+			return;
+		}
+		usremail = document.getElementById("signup-email").value;
+		if(!validateEmail(usremail)){
+			swal({   title: "Incorrect Email",   text: "Oops! Please enter a valid E-mail address & try again",   type: "error",   confirmButtonText: "OK" });
+			usremail="";
+			return
+		};		
+		$('body').plainOverlay('show',{
+			opacity:0.8,
+			fillColor: '#000',
+			progress: function() { return $('<div style="font-size:40px;color:#fff;font-weight:bold">Working...</div>'); }
+		});
+		usrname = document.getElementById("signup-username").value;
+		passwd = document.getElementById("signup-password").value;
+		usrnewmail = String(usremail).replace(/[^a-zA-Z0-9]/g, ' ');
+		firebaseRef.child("users").child(usrnewmail).once("value", function(snapshot) {
+			if(snapshot.val()){
+				$('body').plainOverlay('hide');	
+				swal({   title: "Email already in use",   text: "Hey! You are already registered with us. Please Login",   timer: 2000,   showConfirmButton: false });		
+				$('#signinbtnn').click();		
+			}else{
+				mailconfirm(usremail);
+				$('body').plainOverlay('hide');
+				swal({title: "E-mail verification Code", text: "Please enter the 4 digit Verification Code sent to your E-mail",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Verification Code" }, 
+				function(emailVal){
+				if (emailVal === false) return false;
+				if (emailVal != otpmail) {     swal.showInputError("Please Enter the correct 4 digits");     return false   }
+				swal("Mail Verification Succesful", "Congratulations. Just one more step to verify your Mobile Number", "success");
+				swal({title: "Mobile Verification", text: "",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
+				function(inputValue){
+				if((inputValue.length == 11) && (inputValue[0] == '0')){
+					inputValue = inputValue.substr(1,inputValue.length);
+				};
+				var number = inputValue.replace(/[^\d]/g, '').length ;
+				if (inputValue === false) return false; 
+				if (number != 10) {swal.showInputError("Please Enter your 10 digit mobile number (without adding zero in the beginning) and select your country code");     return false   }
+				var intno = String(document.getElementById("countrycd").value)+String(inputValue.replace(/[^\d]/g, ''));
+				if(document.getElementById("countrycd").value == '91'){
+					otpcall(intno);
+				}else{
+					otpintcall(intno);
+				}						
+				swal({title: "Enter OTP", text: "Please enter the 4 digit OTP sent as SMS",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "OTP (One Time Password)" }, 
+				function(inputValue2){
+				var number = inputValue.replace(/[^\d]/g, '').length ;
+				if (inputValue === false) return false; 
+				if (otp != inputValue2) {     swal.showInputError("Please Enter the correct 4 digits");     return false   }
+				if(usremail=="" || usremail===undefined){ swal({   title: "Your Email!",   text: "Oops! There was a problem confirming your email",   type: "input",   showCancelButton: true,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your email here" }, function(inputValuez){   if (inputValuez === false) return false;      if (inputValuez === "") {     swal.showInputError("You need to write something!");     return false   }     usrnewmail = String(inputValuez).replace(/[^a-zA-Z0-9]/g, ' '); usremail = inputValuez})};
+				firebaseRef.createUser({ email : usremail,  password : passwd}, function(error, userData) {
+					localStorage.setItem('svemail' , usremail);
+					localStorage.setItem('svpsw' , passwd);
+					if (error) {
+						sweetAlert("Oops...", "There was a problem creating your Account. Please try Again", "error");
+						$('#myanchor').click();
+						$('body').plainOverlay('hide');
+						return;
+					} else {
+						firebaseRef.child("users").child(usrnewmail).update({usrname:usrname, usremail:usremail, usrid:usrnewmail, usrphone:intno});	
+						usrphone = intno; usrid = usrnewmail; var regsclbck = "New user registered on friends : "+usrname+" "+usrphone+" "+usremail;
+						mailcall(regsclbck); $('body').plainOverlay('hide'); swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); loggedin = 1;	$('#myanchor').click();	
+				document.getElementById("namehdr").innerHTML += 'Hi ' + usrname.split(" ")[0].substring(0, 10);		 
+				document.getElementById("namehdr").style.display = "inline-block";
+				document.getElementById("signleft").style.display = "none";
+				fbflag = 0; loggedin = 1; $('#myanchor').click();	
+				$('#myanchor').click();						
+					};
+				})			
+				})
+				});	
+				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');
+				});
+			}; 			
+		});
+	}
+	
+	function loginmail(){
+		if(document.getElementById("signin-email").value==""||document.getElementById("signin-password").value==""){
+			swal({   title: "Insufficient Details",   text: "Oops! Please fill all details for Signing In",   type: "error",   confirmButtonText: "OK" });
+			return;
+		}	
+		$('body').plainOverlay('show',{opacity:0.8, fillColor: '#000', progress: function() { return $('<div style="font-size:40px;color:#fff;font-weight:bold">Logging you in...</div>') }});
+		usremail = document.getElementById("signin-email").value;
+		passwd = document.getElementById("signin-password").value;
+		usrnewmail = String(usremail).replace(/[^a-zA-Z0-9]/g, ' ');
+		firebaseRef.authWithPassword({email:usremail, password : passwd}, function(error, authData) {
+  if (error) {
+    $('body').plainOverlay('hide');
+	sweetAlert("Incorrect credentials", "Please try with correct E-mail & password. If you are a new user, please Sign Up", "error");
+	return;
+  } else {
+    firebaseRef.child("users").child(usrnewmail).once("value", function(snapshot) {
+		$('body').plainOverlay('hide');
+		if(snapshot.val()){				
+				usrname = snapshot.child("usrname").val();
+				usremail=  snapshot.child("usremail").val();
+				usrphone = snapshot.child("usrphone").val();
+				usrid = snapshot.child("usrid").val();
+				localStorage.setItem('svemail' , usremail);
+				localStorage.setItem('svpsw' , passwd);
+				document.getElementById("namehdr").innerHTML += 'Hi ' + usrname.split(" ")[0].substring(0, 10);		 
+				document.getElementById("namehdr").style.display = "inline-block";
+				document.getElementById("signleft").style.display = "none";
+				fbflag = 0; loggedin = 1;	
+				$('#myanchor').click();			
+			}else{
+				sweetAlert("Oops...", "Our servers could not recognise you. Please try Again", "error");
+						
+			}
+	});
+	}
+	});
+	}
+	

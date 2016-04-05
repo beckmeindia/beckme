@@ -406,8 +406,7 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
   forcekeyexit(vehicleId);  
 })
 
-$(document).ready(function(){
-	
+$(document).ready(function(){	
 	var $form_modal = $('.cd-user-modal'),
 		$form_login = $form_modal.find('#cd-login'),
 		$form_signup = $form_modal.find('#cd-signup'),

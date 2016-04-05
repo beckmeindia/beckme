@@ -22,32 +22,7 @@
         console.log("Image URL: " + profile.getImageUrl());
         console.log("Email: " + profile.getEmail());
       };
-	$(function(){
-		// Calling Login Form
-		$("#login_form").click(function(){
-			$(".social_login").hide();
-			$(".user_login").show();
-			return false;
-		});
-
-		// Calling Register Form
-		$("#register_form").click(function(){
-			$(".social_login").hide();
-			$(".user_register").show();
-			$(".header_title").text('Register');
-			return false;
-		});
-
-		// Going back to Social Forms
-		$(".back_btn").click(function(){
-			$(".user_login").hide();
-			$(".user_register").hide();
-			$(".social_login").show();
-			$(".header_title").text('Login');
-			return false;
-		});
-
-	})
+	
 			var md = new MobileDetect(window.navigator.userAgent);
 			if (md.mobile() === undefined || md.mobile() === null){}
 			else{
@@ -856,8 +831,7 @@ input:focus {
 	
 	</script>
   <script src="index.js"></script>
-		<div class="container">
-	
+		<div class="container">	
 			<ul id="gn-menu" class="gn-menu-main" style="border-bottom:1px solid #c6d0da;position: absolute;z-index:999;">				
 				<li id="mnuitm" class="gn-trigger" style="border-right:none;display:none">
 					<a class="gn-icon gn-icon-menu"></a>
