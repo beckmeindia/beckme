@@ -657,6 +657,16 @@ $(document).ready(function(){
 			if(snapshot.val()){
 				swal({   title: "Email already in use",   text: "Hey! You are already registered with us",   timer: 1500,   showConfirmButton: false });		
 				$('body').plainOverlay('hide');	
+				usrname = snapshot.child("usrname").val();
+				usremail=  snapshot.child("usremail").val();
+				usrphone = snapshot.child("usrphone").val();
+				usrid = snapshot.child("usrid").val();
+				console.log(usrname+" "+usrphone);
+				document.getElementById("namehdr").innerHTML += 'Hi ' + usrname.split(" ")[0].substring(0, 10);		 
+				document.getElementById("namehdr").style.display = "inline-block";
+				document.getElementById("signleft").style.display = "none";
+				fbflag = 0; loggedin = 1;	
+				$('#myanchor').click();
 				//now call login funtion()				
 			}else{
 				mailconfirm(usremail);
@@ -695,7 +705,12 @@ $(document).ready(function(){
 					} else {
 						firebaseRef.child("users").child(usrnewmail).update({usrname:usrname, usremail:usremail, usrid:usrnewmail, usrphone:intno});	
 						usrphone = intno; usrid = usrnewmail; var regsclbck = "New user registered on friends : "+usrname+" "+usrphone+" "+usremail;
-						mailcall(regsclbck); $('body').plainOverlay('hide'); swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); loggedin = 1;						
+						mailcall(regsclbck); $('body').plainOverlay('hide'); swal("Verification Succesful", "Congratulations. You are succesfully registered with BECK!", "success"); loggedin = 1;		
+				document.getElementById("namehdr").innerHTML += 'Hi ' + usrname.split(" ")[0].substring(0, 10);		 
+				document.getElementById("namehdr").style.display = "inline-block";
+				document.getElementById("signleft").style.display = "none";
+				fbflag = 0; loggedin = 1;	
+				$('#myanchor').click();						
 					};
 				})			
 				})
@@ -705,7 +720,37 @@ $(document).ready(function(){
 			}; 			
 		});
 	}
-		
+	
+	function loginmail(){		
+		usremail = document.getElementById("signin-email").value;
+		passwd = document.getElementById("signin-password").value;
+		usrnewmail = String(usremail).replace(/[^a-zA-Z0-9]/g, ' ');
+		firebaseRef.authWithPassword({email:usremail, password : passwd}, function(error, authData) {
+  if (error) {
+    sweetAlert("Oops...", "There was a problem Logging you in. Please try with correct E-mail & password", "error");
+	$('body').plainOverlay('hide');
+	return;
+  } else {
+    firebaseRef.child("users").child(usrnewmail).once("value", function(snapshot) {
+		if(snapshot.val()){
+				usrname = snapshot.child("usrname").val();
+				usremail=  snapshot.child("usremail").val();
+				usrphone = snapshot.child("usrphone").val();
+				usrid = snapshot.child("usrid").val();
+				document.getElementById("namehdr").innerHTML += 'Hi ' + usrname.split(" ")[0].substring(0, 10);		 
+				document.getElementById("namehdr").style.display = "inline-block";
+				document.getElementById("signleft").style.display = "none";
+				fbflag = 0; loggedin = 1;	
+				$('#myanchor').click();			
+			}else{
+				sweetAlert("Oops...", "Our servers could not recognise you. Please try Again", "error");
+						
+			}
+	});
+	}
+	});
+	}
+	
 	function editnum(){
 		if(loggedin==1){swal({   title: "Change number",   text: "Your present registered number is +"+usrphone+". Are you sure you want to change it?", html: true,   type: "warning",   showCancelButton: true,   confirmButtonColor: "#2bb1de",   confirmButtonText: "Change it",   closeOnConfirm: false }, function(){ smsending() })}else{befrlogin()};
 	}
