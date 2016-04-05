@@ -639,7 +639,10 @@ $(document).ready(function(){
 
 	var passwd;
 	function signupmail(){
-		
+		if(document.getElementById("signup-email").value==""||document.getElementById("signup-username").value==""||document.getElementById("signup-password").value==""){
+			swal({   title: "Insufficient Details",   text: "Oops! Please fill all details for Signing Up",   type: "error",   confirmButtonText: "OK" });
+			return;
+		}
 		usremail = document.getElementById("signup-email").value;
 		if(!validateEmail(usremail)){
 			swal({   title: "Incorrect Email",   text: "Oops! Please enter a valid E-mail address & try again",   type: "error",   confirmButtonText: "OK" });
@@ -714,7 +717,11 @@ $(document).ready(function(){
 		});
 	}
 	
-	function loginmail(){		
+	function loginmail(){
+		if(document.getElementById("signin-email").value==""||document.getElementById("signin-password").value==""){
+			swal({   title: "Insufficient Details",   text: "Oops! Please fill all details for Signing In",   type: "error",   confirmButtonText: "OK" });
+			return;
+		}		
 		usremail = document.getElementById("signin-email").value;
 		passwd = document.getElementById("signin-password").value;
 		usrnewmail = String(usremail).replace(/[^a-zA-Z0-9]/g, ' ');
