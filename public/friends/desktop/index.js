@@ -587,7 +587,8 @@ $(document).ready(function(){
 	$("#os-phrases > h2.openz").lettering('words').children("span").lettering().children("span").lettering();
 	$('#cloudz').css('background-image','url(bckg.jpg)')
   .waitForImages(function() {
-   document.getElementById("cloudz").style.display="block"
+   document.getElementById("cloudz").style.display="block";
+   document.getElementById("mnuitm2").style.display="block";			
   }, $.noop, true);
             var win = $(window),
                 foo = $('#typer');
@@ -1432,7 +1433,7 @@ $(document).ready(function(){
 			if(path) path.setMap(null);
 			for (var i = 0; i < hotSpotMapMarkers.length; i++)
 			hotSpotMapMarkers[i].setMap(null);
-			if(path) path.setMap(null);
+			if(path) path.setMap(null); 
 			document.getElementById("rqstgist").style.display="none";
 			document.getElementById("pckgctr").innerHTML="Loading...";
 			var address = ''; rsltshow = 0; google.maps.event.trigger(map, 'resize');

@@ -648,7 +648,7 @@ input:focus {
 	}
 	</style>
 	</head>
-  <body ng-app="MyApp" ng-cloak style="background:#eaeaea" style="display:none">
+  <body oncontextmenu="return false;" ng-app="MyApp" ng-cloak style="background:#eaeaea" style="display:none">
   <div class="cd-user-modal">
 		<div class="cd-user-modal-container">
 			<ul class="cd-switcher" style="list-style-type: none;padding-left:0">
@@ -847,8 +847,8 @@ input:focus {
 					</nav>
 				</li>
 				<li id="tgnmlyn" style="padding-left:60px;padding-right:60px;font-size:24px;font-family: 'Maven Pro', sans-serif;">BECK <span style="color:#ff0000;">Friends</span></li>
-				<li id="mnuitm2" style="padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;"/><input placeholder="What is Your Location?" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
-				<li id="lastbit" style="display:none;padding-left:40px;padding-right:40px;font-size:18px;float:right;" ><span id="namehdr" style="vertical-align: middle;margin-top:-5px;display:none"><img id="profile_img" src="profile.png" style="margin-top:-5px;margin-right:15px;border-radius:50%;width:40px;height:40px;vertical-align: middle;"/></span> <md-button id="signleft" style="margin-top:-5px;">LOGIN</md-button></li>				
+				<li id="mnuitm2" style="display:none;padding-left:20px;padding-right:10px;font-size:18px;border-right:none;width:50%"><img src="search.png" style="width:28px;margin-top:17px;display:inline;position:absolute;"/><input placeholder="What is Your Location?" type="search" id="searchloc" class="gn-search" style="padding-left:40px;width:100%;display:inline"></li>
+				<li id="lastbit" style="display:none;padding-left:40px;padding-right:40px;font-size:18px;float:right;" ><span id="namehdr" style="vertical-align: middle;margin-top:-5px;display:none"><img id="profile_img" src="profile.png" style="margin-top:-5px;margin-right:15px;border-radius:50%;width:40px;height:40px;vertical-align: middle;"/></span> <md-button id="signleft" style="margin-top:-5px;background:#FF5274;color:#fff">LOGIN</md-button></li>				
 			</ul>			
 		</div>		
 		<div layout="row" style="padding-top:60px;height:100%;background:#cccccc" ng-controller="AppCtrl" ng-cloak="" class="carddemoInCardActions">
