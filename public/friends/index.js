@@ -1778,5 +1778,8 @@ geoQuery.on("key_exited", function(vehicleId, vehicleLocation) {
   } else {
      sweetAlert("Oops...", "Our servers could not recognise you. Please try Again", "error");
   }
+	})
 	}
+	
+	
 	

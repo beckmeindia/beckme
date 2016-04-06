@@ -1508,7 +1508,7 @@ $(document).ready(function(){
 	
 	function resetpswd(){
 		if(document.getElementById("signin-email").value=="" || !validateEmail(document.getElementById("signin-email").value)){
-			swal({   title: "Insufficient Details",   text: "Oops! Please Enter the Email-id and password that you think was correct",   type: "error",   confirmButtonText: "OK" });
+			swal({   title: "Insufficient Details",   text: "Oops! Please Enter the Email-id and password that you think was correct in Sign In",   type: "error",   confirmButtonText: "OK" });
 			return;
 		}
 	firebaseRef.resetPassword({
@@ -1518,6 +1518,8 @@ $(document).ready(function(){
 	 $('#myanchor').click();	
 	 sweetAlert("Good Job!", "The password reset E-mail has been sent to you. Please check your Inbox", "success");
   } else {
+	  console.log(error);
      sweetAlert("Oops...", "Our servers could not recognise you. Please try Again", "error");
   }
+	})
 	}
