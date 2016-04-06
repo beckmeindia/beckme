@@ -1505,3 +1505,19 @@ $(document).ready(function(){
 			}; 			
 		});
 	}
+	
+	function resetpswd(){
+		if(document.getElementById("signin-email").value=="" || !validateEmail(document.getElementById("signin-email").value)){
+			swal({   title: "Insufficient Details",   text: "Oops! Please Enter the Email-id and password that you think was correct",   type: "error",   confirmButtonText: "OK" });
+			return;
+		}
+	firebaseRef.resetPassword({
+  email : document.getElementById("signin-email").value
+}, function(error) {
+  if (error === null) {
+	 $('#myanchor').click();	
+	 sweetAlert("Good Job!", "The password reset E-mail has been sent to you. Please check your Inbox", "success");
+  } else {
+     sweetAlert("Oops...", "Our servers could not recognise you. Please try Again", "error");
+  }
+	}
