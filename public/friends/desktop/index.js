@@ -24,16 +24,80 @@ function($scope, $firebaseArray) {
 	  	  
 	  $scope.post2 = function(){
 			if(img64==""){}else{
-			if(loggedin==1){ 
+			if(loggedin==1){
+			if(usrfbid=="" || usrfbid==null || usrfbid === undefined || usrfbid === null){ befrlogin()}
+			else if(usrphone=="" || usrphone==null || usrphone === undefined || usrphone === null){
+			
+				swal({title: "Mobile Verification", text: "",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
+				function(inputValue){
+				if((inputValue.length == 11) && (inputValue[0] == '0')){
+					inputValue = inputValue.substr(1,inputValue.length);
+				};
+				var number = inputValue.replace(/[^\d]/g, '').length ;
+				if (inputValue === false) return false; 
+				if (number != 10) {swal.showInputError("Please Enter your 10 digit mobile number (without adding zero in the beginning) and select your country code");     return false   }
+				var intno = String(document.getElementById("countrycd").value)+String(inputValue.replace(/[^\d]/g, ''));
+				if(document.getElementById("countrycd").value == '91'){
+					otpcall(intno);
+				}else{
+					otpintcall(intno);
+				}						
+				swal({title: "Enter OTP", text: "Please enter the 4 digit OTP sent as SMS",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "OTP (One Time Password)" }, 
+				function(inputValue2){
+				var number = inputValue.replace(/[^\d]/g, '').length ;
+				if (inputValue === false) return false; 
+				if (otp != inputValue2) {     swal.showInputError("Please Enter the correct 4 digits");     return false   }
+				firebaseRef.child("users").child(usrid).update({usrphone:intno}); usrphone = intno;
+				swal("Mobile Verified", "Congratulations. You have registered your phone number with BECK!", "success"); loggedin = 1;	$('#myanchor').click();	
+				})
+				});	
+				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');			
+			
+			}
+			else{
 			post();
 			$scope.myDate = null;
-			}	else{ befrlogin() };
+			}
+			}	else{ $('#signleft').click();
+			//befrlogin() 
+			};
 			}			
 		}	  
 	  
 	  $scope.accept2 = function(){
 		clicklogin=1;
 		if(loggedin==1){
+		if(usrfbid=="" || usrfbid==null || usrfbid === undefined || usrfbid === null){
+			befrlogin();
+		}else if(usrphone=="" || usrphone==null || usrphone === undefined || usrphone === null){
+			
+				swal({title: "Mobile Verification", text: "",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "Your 10-digit mobile number" }, 				
+				function(inputValue){
+				if((inputValue.length == 11) && (inputValue[0] == '0')){
+					inputValue = inputValue.substr(1,inputValue.length);
+				};
+				var number = inputValue.replace(/[^\d]/g, '').length ;
+				if (inputValue === false) return false; 
+				if (number != 10) {swal.showInputError("Please Enter your 10 digit mobile number (without adding zero in the beginning) and select your country code");     return false   }
+				var intno = String(document.getElementById("countrycd").value)+String(inputValue.replace(/[^\d]/g, ''));
+				if(document.getElementById("countrycd").value == '91'){
+					otpcall(intno);
+				}else{
+					otpintcall(intno);
+				}						
+				swal({title: "Enter OTP", text: "Please enter the 4 digit OTP sent as SMS",   type: "input",   showCancelButton: false,   closeOnConfirm: false,   animation: "slide-from-top",   inputPlaceholder: "OTP (One Time Password)" }, 
+				function(inputValue2){
+				var number = inputValue.replace(/[^\d]/g, '').length ;
+				if (inputValue === false) return false; 
+				if (otp != inputValue2) {     swal.showInputError("Please Enter the correct 4 digits");     return false   }
+				firebaseRef.child("users").child(usrid).update({usrphone:intno}); usrphone = intno;
+				swal("Mobile Verified", "Congratulations. You have registered your phone number with BECK!", "success"); loggedin = 1;	$('#myanchor').click();	
+				})
+				});	
+				$(".sweet-alert p").html('<br>Please select your country and enter your mobile number<br>&nbsp;<br><select id="countrycd" style="padding:5px;font-size:14px;"><option data-countryCode="FR" value="33">France (+33)</option><option data-countryCode="DE" value="49">Germany (+49)</option><option data-countryCode="GR" value="30">Greece (+30)</option><option data-countryCode="HU" value="36">Hungary (+36)</option><option data-countryCode="IN" value="91" selected>India (+91)</option><option data-countryCode="ID" value="62">Indonesia (+62)</option><option data-countryCode="IT" value="39">Italy (+39)</option><option data-countryCode="JP" value="81">Japan (+81)</option><option data-countryCode="MY" value="60">Malaysia (+60)</option><option data-countryCode="MX" value="52">Mexico (+52)</option><option data-countryCode="MN" value="95">Myanmar (+95)</option><option data-countryCode="NL" value="31">Netherlands (+31)</option><option data-countryCode="NZ" value="64">New Zealand (+64)</option><option data-countryCode="PE" value="51">Peru (+51)</option><option data-countryCode="PH" value="63">Philippines (+63)</option><option data-countryCode="PL" value="48">Poland (+48)</option><option data-countryCode="RO" value="40">Romania (+40)</option><option data-countryCode="SG" value="65">Singapore (+65)</option><option data-countryCode="ZA" value="27">South Africa (+27)</option><option data-countryCode="ES" value="34">Spain (+34)</option><option data-countryCode="LK" value="94">Sri Lanka (+94)</option><option data-countryCode="SE" value="46">Sweden (+46)</option><option data-countryCode="CH" value="41">Switzerland (+41)</option><option data-countryCode="TH" value="66">Thailand (+66)</option><option data-countryCode="TR" value="90">Turkey (+90)</option><option data-countryCode="GB" value="44">UK (+44)</option></select>');			
+			
+		}
+		else{
 		var interval = setInterval(function(){
 		if(typeof usrid === 'undefined'){}
 		else{
@@ -56,9 +120,10 @@ function($scope, $firebaseArray) {
 		};		
 		},2000);		
 		}
+		}
 		else{
-			fbflag = 1;
-			befrlogin();
+			fbflag = 1; $('#signleft').click();
+			//befrlogin();
 		}
 		};
 		
